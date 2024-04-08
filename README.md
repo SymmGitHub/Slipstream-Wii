@@ -1,4 +1,3 @@
-A Mario Kart Wii tool that automates character-related file editing
 # Credits
 Symm - Main Programmer and UI Design
 
