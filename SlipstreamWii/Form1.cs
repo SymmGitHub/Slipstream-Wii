@@ -126,7 +126,7 @@ namespace SlipstreamWii
             // Save a sample model from target
             SaveFileDialog save = new SaveFileDialog();
             save.Title = "Save a szs model to sample files from.";
-            save.FileName = $"{targetCharBox.Text.Replace(" ", "")}.sample.szs";
+            save.FileName = $"{targetCharBox.Text.Replace(" ", "-")}.sample.szs";
             save.Filter = "MKW Sample Model File (*.sample.szs)|*.sample.szs|All files (*.*)|*.*";
             if (save.ShowDialog() == DialogResult.OK)
             {
@@ -993,6 +993,8 @@ namespace SlipstreamWii
             }
 
             // Clear Temp Folder
+            if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + "\\Common.bmg"))
+                File.Delete(AppDomain.CurrentDomain.BaseDirectory + "\\Common.bmg");
             if (Directory.Exists(tempPath))
                 Directory.Delete(tempPath, true);
 
