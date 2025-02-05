@@ -126,7 +126,7 @@ namespace SlipstreamWii
             // Save a sample model from target
             SaveFileDialog save = new SaveFileDialog();
             save.Title = "Save a szs model to sample files from.";
-            save.FileName = $"{targetCharBox.Text.Replace(" ", "-")}.sample.szs";
+            save.FileName = $"{targetCharBox.Text.Replace(" ", "-")}";
             save.Filter = "MKW Sample Model File (*.sample.szs)|*.sample.szs|All files (*.*)|*.*";
             if (save.ShowDialog() == DialogResult.OK)
             {
@@ -399,19 +399,26 @@ namespace SlipstreamWii
             {
                 File.Copy(iconPath, tempPath + "\\Icons.szs");
                 await TaskCMD(cmdType.ExtractFile, tempPath + "\\Icons.szs", "", false);
-                foreach (string iconName in target.iconNames)
+                string timgPath = tempPath + "\\Icons.d\\game_image\\timg";
+                if (Directory.Exists(timgPath))
                 {
-                    string timgPath = tempPath + "\\Icons.d\\game_image\\timg";
-                    if (File.Exists(timgPath + $"\\st_{iconName}_32x32.tpl"))
+                    foreach (string iconName in target.iconNames)
                     {
-                        File.Copy(timgPath + $"\\st_{iconName}_32x32.tpl", folderPath + $"\\st_icon_32x32.tpl");
-                    }
-                    if (File.Exists(timgPath + $"\\tt_{iconName}_64x64.tpl"))
-                    {
-                        File.Copy(timgPath + $"\\tt_{iconName}_64x64.tpl", folderPath + $"\\tt_icon_64x64.tpl");
+                        if (File.Exists(timgPath + $"\\st_{iconName}_32x32.tpl"))
+                        {
+                            File.Copy(timgPath + $"\\st_{iconName}_32x32.tpl", folderPath + $"\\st_icon_32x32.tpl");
+                        }
+                        else Debug.WriteLine("Failed to find 32x32 Icon at: " + timgPath + $"\\st_{iconName}_32x32.tpl");
+                        if (File.Exists(timgPath + $"\\tt_{iconName}_64x64.tpl"))
+                        {
+                            File.Copy(timgPath + $"\\tt_{iconName}_64x64.tpl", folderPath + $"\\tt_icon_64x64.tpl");
+                        }
+                        else Debug.WriteLine("Failed to find 64x64 Icon at: " + timgPath + $"\\tt_{iconName}_64x64.tpl");
                     }
                 }
+                else Debug.WriteLine("Failed to find timg folder path at: " + timgPath);
             }
+            
             globalProgress.Value++;
 
             // Get Character Name
